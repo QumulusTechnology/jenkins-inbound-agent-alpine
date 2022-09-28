@@ -63,6 +63,7 @@ RUN addgroup -g 1000 ${user} &&\
                     jq \
                     openjdk11 \
                     yarn \
+                    npm \
                     nodejs \
                     nodejs-dev &&\
     gem install package_cloud &&\
