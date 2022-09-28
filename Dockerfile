@@ -90,8 +90,8 @@ RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform
     apk update &&\
     gem install package_cloud
 
-USER ${user}
+#USER ${user}
 
-#USER root
+USER root
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
