@@ -39,6 +39,7 @@ ARG user=jenkins
 RUN addgroup -g 1000 ${user} &&\
     adduser -g "Jenkins user" -u 1000 -G ${user} -D -h /var/lib/jenkins ${user}  &&\
     apk update && \
+    apk add --no-cache build-base &&\
     apk add  \
                     sudo \
                     gcc \
