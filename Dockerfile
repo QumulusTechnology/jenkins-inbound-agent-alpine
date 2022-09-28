@@ -36,8 +36,8 @@ LABEL Description="This is a base image, which allows connecting Jenkins agents 
 
 ARG user=jenkins
 
-RUN addgroup -g 1001 ${user} &&\
-    adduser -g "Jenkins user" -u 1001 -g ${user} -D -h /var/lib/jenkins ${user}  &&\
+RUN addgroup -g 1000 ${user} &&\
+    adduser -g "Jenkins user" -u 1000 -G ${user} -D -h /var/lib/jenkins ${user}  &&\
     apk update && \
     apk add  \
                     sudo \
