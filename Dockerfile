@@ -25,7 +25,7 @@ ARG terraform_version=1.1.4
 ARG packer_version=1.7.9
 ARG helm_version=3.8.0
 
-FROM quay.io/centos/centos:stream8
+FROM docker:dind 
 
 ARG version
 ARG terraform_version
@@ -36,69 +36,41 @@ LABEL Description="This is a base image, which allows connecting Jenkins agents 
 
 ARG user=jenkins
 
-RUN groupadd -g 1000 ${user} &&\
-    useradd ${user} -u 1000 -g 1000 -c "Jenkins user" -d /var/lib/jenkins &&\
-    groupadd -g 982 docker &&\
-    usermod -aG docker ${user} &&\
-    dnf -y clean all &&\
-    dnf -y install epel-release &&\
-    dnf -y update &&\
-    dnf group install -y "Development Tools" &&\
-    dnf install -y --enablerepo=epel --enablerepo=powertools \
+RUN addgroup -g 1000 ${user} &&\
+    adduser -g "Jenkins user" -u 1000 -g ${user} -D -h /var/lib/jenkins ${user}  &&\
+    apk update && \
+    apk add  \
                     sudo \
                     gcc \
                     make \
                     autoconf \
                     automake \
                     libtool \
-                    rpm-build \
-                    libtirpc-devel \
-                    libblkid-devel \
-                    libuuid-devel \
-                    libudev-devel \
-                    openssl-devel \
-                    zlib-devel \
-                    libaio-devel \
-                    libattr-devel \
+                    openssl-dev \
+                    zlib-dev \
                     elfutils-libelf-devel \
                     kernel-devel \
                     python3 \
-                    python3-devel \
-                    python3-setuptools \
-                    python3-cffi \
-                    libffi-devel \
+                    python3-dev \
+                    libffi-dev \
                     git \
-                    ncompress \
-                    libcurl-devel \
-                    python3-packaging \
-                    dkms \
-                    gem \
+                    curl-dev \
                     ruby \
-                    ruby-devel \
-                    gcc-c++ \
+                    ruby-dev \
                     wget \
                     curl \
                     unzip \
                     gnupg \
                     jq \
-                    java-11-openjdk.x86_64 \
-                    yum-utils &&\
-                    yum remove docker \
-                    docker-client \
-                    docker-client-latest \
-                    docker-common \
-                    docker-latest \
-                    docker-latest-logrotate \
-                    docker-logrotate \
-                    docker-engine &&\
+                    openjdk11 \
+                    yarn \
+                    nodejs \
+                    nodejs-dev &&\
     gem install package_cloud &&\
-    curl -sL https://rpm.nodesource.com/setup_16.x | bash - &&\
-    dnf install -y nodejs &&\
     npm install -g --update npm &&\
-    npm update -g &&\
-    curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo &&\
-    dnf install -y yarn &&\
-    wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip &&\
+    npm update -g 
+
+RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip &&\
     unzip terraform_${terraform_version}_linux_amd64.zip &&\
     mv terraform /usr/local/bin/terraform &&\
     rm terraform_${terraform_version}_linux_amd64.zip &&\
@@ -114,12 +86,11 @@ RUN groupadd -g 1000 ${user} &&\
     mv jenkins-agent /usr/local/bin/jenkins-agent &&\
     chmod +x /usr/local/bin/jenkins-agent &&\
     ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave &&\
-    dnf -y update &&\
-    dnf -y clean all &&\
+    apk update &&\
     gem install package_cloud
 
-#USER ${user}
+USER ${user}
 
-USER root
+#USER root
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]

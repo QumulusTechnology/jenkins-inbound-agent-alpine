@@ -1,1 +1,1 @@
-# jenkins-inbound-agent-centos8-stream
+# jenkins-inbound-agent-dind
