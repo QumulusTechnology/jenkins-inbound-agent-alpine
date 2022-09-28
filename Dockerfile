@@ -41,6 +41,7 @@ RUN addgroup -g 1000 ${user} &&\
     apk update && \
     apk add --no-cache build-base &&\
     apk add  \
+                    bash \
                     sudo \
                     gcc \
                     make \
