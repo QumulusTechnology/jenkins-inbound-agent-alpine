@@ -1,1 +1,1 @@
-# jenkins-inbound-agent-dind
+# jenkins-inbound-agent-alpine
