@@ -57,11 +57,11 @@ spec:
           sh '''#!/busybox/sh
             if [ -n "$TAG" ]; then
               /kaniko/executor --context `pwd` --force \
-                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-dind:latest \
-                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-dind:$TAG
+                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-alpine:latest \
+                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-alpine:$TAG
             else
               /kaniko/executor --context `pwd` --force \
-                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-dind:latest
+                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-apline:latest
             fi
           '''
         }
