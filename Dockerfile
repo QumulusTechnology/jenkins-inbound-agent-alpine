@@ -25,7 +25,7 @@ ARG terraform_version=1.1.4
 ARG packer_version=1.7.9
 ARG helm_version=3.8.0
 
-FROM docker:dind 
+FROM alpine:latest 
 
 ARG version
 ARG terraform_version
@@ -63,6 +63,7 @@ RUN addgroup -g 1000 ${user} &&\
                     gnupg \
                     jq \
                     openjdk11 \
+                    ansible \
                     yarn \
                     npm \
                     nodejs \
@@ -90,8 +91,8 @@ RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform
     apk update &&\
     gem install package_cloud
 
-#USER ${user}
+USER ${user}
 
-USER root
+#USER root
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
