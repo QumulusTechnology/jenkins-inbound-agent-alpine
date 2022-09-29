@@ -61,7 +61,7 @@ spec:
                 --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-alpine:$TAG
             else
               /kaniko/executor --context `pwd` --force \
-                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-apline:latest
+                --destination repo.qumulus.io/jenkins/jenkins-inbound-agent-alpine:latest
             fi
           '''
         }
